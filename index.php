@@ -86,8 +86,16 @@
 		echo "\n";
 
 		echo "			<div class=\"node_detail\">\n";
-		echo "				<span class=\"node_desc\">PoW Difficulty:</span><br>\n";
-		echo "				". number_format($network_info["difficulty"], 2) ."\n";
+		echo "				<span class=\"node_desc\">Block Hash:</span><br>\n";
+		echo "				".$network_info["bestblockhash"]."\n";
+		echo "			</div>\n";
+		echo "\n";
+
+		$mining_info = getmininginfo();
+
+		echo "			<div class=\"node_detail\">\n";
+		echo "				<span class=\"node_desc\">Difficulty:</span><br>\n";
+		echo "				". number_format($mining_info["difficulty"], 2) ."\n";
 		echo "			</div>\n";
 		echo "\n";
 
@@ -103,12 +111,12 @@
 		}
 
 		// network stake weight
-		$mining_info = getmininginfo();
-		$mining_info["netstakeweight"] = $mining_info["netstakeweight"] / 100000000;
+		$staking_info = getstakinginfo();
+		$staking_info["netstakeweight"] = $staking_info["netstakeweight"] / 100000000;
 
 		echo "			<div class=\"node_detail\">\n";
 		echo "				<span class=\"node_desc\">PoS Net-Weight:</span><br>\n";
-		echo "				". number_format($mining_info["netstakeweight"], 2) ."\n";
+		echo "				". number_format($staking_info["netstakeweight"], 2) ."\n";
 		echo "			</div>\n";
 		echo "\n";
 	

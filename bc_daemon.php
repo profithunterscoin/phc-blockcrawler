@@ -118,6 +118,19 @@
 		return ($info);
 	}
 
+	function getstakinginfo ()
+	{
+	//	The JSON-RPC request starts with a method name
+		$request_array["method"] = "getstakinginfo";
+		
+	//	Send the request to the wallet
+		$info = wallet_fetch ($request_array);
+		
+	//	This function returns a string containing the calculated
+	//	network hash rate for the latest block
+		return ($info);
+	}
+
 	function getmasternodecount ()
 	{
 	//	The JSON-RPC request starts with a method name
