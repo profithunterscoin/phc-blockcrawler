@@ -161,7 +161,9 @@
 		echo "			<div class=\"node_detail\">\n";
 		echo "				<span class=\"node_desc\">API Commands:</span><br>\n";
 		echo "				<a href=\"bc_api.php?request=getinfo\">getinfo</a><br>\n";
+		echo "				<a href=\"bc_api.php?request=getmoneysupply\">getmoneysupply</a><br>\n";
 		echo "				<a href=\"bc_api.php?request=getblockcount\">getblockcount</a><br>\n";
+		echo "				<a href=\"bc_api.php?request=getmasternodecount\">getmasternodecount</a><br>\n";
 		echo "				<a href=\"bc_api.php?request=masternodelistaddr\">masternodelistaddr</a><br>\n";
 		echo "				<a href=\"bc_api.php?request=masternodelistfull\">masternodelistfull</a><br>\n";
 		echo "				<a href=\"bc_api.php?request=getbestblockhash\">getbestblockhash</a><br>\n";

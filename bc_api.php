@@ -139,6 +139,14 @@
 		bcapi_error (6, "Method Not Permitted: stop");
 	}	
 
+// Masternode Count (modified query)
+	if ($request[0] == "getmasternodecount")
+	{
+		$request[0] = "masternode";
+		$query["params"][0] = "count";
+		$query["params"][1] = "enabled";
+	}
+
 // Masternode IP Address/Status List (modified query)
 	if ($request[0] == "masternodelistaddr")
 	{
@@ -193,6 +201,35 @@
 	{
 		$query["params"][0] = $request[1];
 	}
+
+// GetMoneySupply  (custom query)
+	if ($request[0] == "getmoneysupply")
+	{
+		$network_info = getinfo ();
+		$result = $network_info["moneysupply"];
+		print_r ($result);
+		exit;
+	}
+
+// GetMoneySupply  (custom query)
+	if ($request[0] == "getpowdifficulty")
+	{
+		$network_info = getinfo ();
+		$result = $network_info["difficulty"];
+		print_r ($result);
+		exit;
+	}
+
+// GetMoneySupply  (custom query)
+	if ($request[0] == "getposweight")
+	{
+		$mine_info = getmininginfo();
+		$mine_info["netstakeweight"] = $mine_info["netstakeweight"] / 100000000;
+		$result = $mine_info["netstakeweight"];
+		print_r ($result);
+		exit;
+	}
+
 
 //	The first word of the request is passed to the daemon as a
 //	JSON-RPC method
