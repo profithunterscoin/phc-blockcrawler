@@ -214,19 +214,25 @@
 // GetMoneySupply  (custom query)
 	if ($request[0] == "getpowdifficulty")
 	{
-		$network_info = getinfo ();
+		$network_info = getmininginfo();
+
 		$result = $network_info["difficulty"];
+
 		print_r ($result);
+
 		exit;
 	}
 
 // GetMoneySupply  (custom query)
 	if ($request[0] == "getposweight")
 	{
-		$mine_info = getmininginfo();
+		$mine_info = getstakinginfo();
 		$mine_info["netstakeweight"] = $mine_info["netstakeweight"] / 100000000;
+
 		$result = $mine_info["netstakeweight"];
+
 		print_r ($result);
+
 		exit;
 	}
 
