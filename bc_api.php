@@ -1,8 +1,17 @@
 <?php
+/******************************************************************************
+	This script is Copyright � 2013 Jake Paysnoe.
+	I hereby release this script into the public domain.
+	Jake Paysnoe Jun 26, 2013
+******************************************************************************/
 
 /******************************************************************************
+	Modified PHC Block Crawler script
+	Version: 1.0.0.1
+	Copyright � 2020 Profit Hunters Coin
+******************************************************************************/
 
-
+/******************************************************************************
 	Accessing data via this API is done using HTTP GET requests.
 	
 	The "request" parameter is to be used for all requests,
@@ -15,8 +24,9 @@
 	
 	Several functions regarding wallet balances and transactions
 	are blocked in the release version of this API.
-
 ******************************************************************************/
+
+
 //	Enable the wallet
 	require_once ("bc_daemon.php");
 	
