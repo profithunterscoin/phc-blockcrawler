@@ -15,9 +15,9 @@
 /******************************************************************************
 	Wallet Configuration
 ******************************************************************************/
-	$GLOBALS["wallet_ip"] = "127.0.0.1";
-	$GLOBALS["wallet_port"] = "20061";
+    $GLOBALS["wallet_ip"] = "127.0.0.1";
+    $GLOBALS["wallet_port"] = "20061";
     $GLOBALS["wallet_user"] = "biznatch";
     $GLOBALS["wallet_pass"] = "ent2017";
-    
+
 ?>
