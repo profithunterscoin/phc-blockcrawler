@@ -1,0 +1,233 @@
+PHP Block Explorer without SQL databases
+
+Version: 1.0.0.1
+
+Block Crawler Node Setup Instructions
+
+
+Install depends:
+----------------------------
+
+sudo apt-get update && sudo apt-get upgrade && sudo apt-get install build-essential libssl-dev libboost-all-dev libqrencode-dev miniupnpc libminiupnpc-dev libcurl4-openssl-dev dh-autoreconf autoconf automake git nano pkg-config libtool libtool-bin libgmp-dev software-properties-common zip unzip
+
+
+Installing DB4 Dependencies (PPA):
+----------------------------
+
+sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update
+sudo apt-get install libdb4.8-dev libdb4.8++-dev
+
+
+Installing DB4 Dependencies (Make Source):
+----------------------------
+
+wget http://download.oracle.com/berkeley-db/db-4.8.30.NC.zip
+unzip db-4.8.30.NC.zip
+cd db-4.8.30.NC
+cd build_unix/
+../dist/configure --prefix=/usr/local --enable-cxx --with-static
+make
+sudo make install
+
+Tell your system where to find db4.8:
+
+export BDB_INCLUDE_PATH="/usr/local/BerkeleyDB.4.8/include"
+export BDB_LIB_PATH="/usr/local/BerkeleyDB.4.8/lib"
+sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so
+
+Ubuntu 20+
+echo "/usr/local/bdb/lib \n" | sudo tee -a /etc/ld.so.conf.d/x86_64-linux-gnu.conf
+
+Ubuntu 16+
+echo /usr/local/bdb/lib >> /etc/ld.so.conf
+
+sudo ldconfig
+
+
+Installing DB4 Dependencies (Autogen):
+----------------------------
+
+BITCOIN_ROOT=$(pwd)
+# Pick some path to install BDB to, here we create a directory within the bitcoin directory
+BDB_PREFIX="${BITCOIN_ROOT}/db4"
+mkdir -p $BDB_PREFIX
+# Fetch the source and verify that it is not tampered with
+wget 'http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz'
+echo '12edc0df75bf9abd7f82f821795bcee50f42cb2e5f76a6a281b85732798364ef db-4.8.30.NC.tar.gz' | sha256sum -c
+# -> db-4.8.30.NC.tar.gz: OK
+tar -xzvf db-4.8.30.NC.tar.gz
+# Build the library and install to our prefix
+cd db-4.8.30.NC/build_unix/
+# Note: Do a static build so that it can be embedded into the executable, instead of having to find a .so at runtime
+../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
+make install
+# Configure Bitcoin Core to use our own-built instance of BDB
+cd $BITCOIN_ROOT
+./autogen.sh
+./configure LDFLAGS="-L${BDB_PREFIX}/lib/" CPPFLAGS="-I${BDB_PREFIX}/include/" # (other args...)
+
+
+Openssl 1.0.2
+----------------------------
+
+wget https://www.openssl.org/source/openssl-1.0.2n.tar.gz -O openssl-1.0.2n.tar.gz
+tar -zxf openssl-1.0.2n.tar.gz
+cd openssl-1.0.2n
+./config
+make
+make test
+sudo make install
+
+
+Creating a swap space (optional):
+----------------------------
+
+sudo fallocate -l 3G /swapfile
+sudo sudo dd if=/dev/zero of=swapfile bs=1M count=3072
+sudo mkswap /swapfile
+sudo chmod 600 /swapfile
+sudo swapon /swapfile
+
+Ubuntu 20+
+echo "/swapfile none swap sw 0 0 \n" | sudo tee -a /etc/fstab
+
+Ubuntu 16+
+sudo echo -e "/swapfile none swap sw 0 0 \n" >> /etc/fstab
+
+sudo cat /proc/meminfo
+
+
+Grabbing the source code:
+----------------------------
+
+git clone http://github.com/profithunterscoin/phc
+cd phc
+
+
+Compiling Daemon:
+----------------------------
+
+cd src
+make -f makefile.unix
+cd ..
+
+
+Installing Daemon:
+----------------------------
+
+cd src
+sudo cp phcd /usr/bin
+cd ..
+
+
+Install Configure PHC Wallet:
+----------------------------
+cd
+cd .PHC
+nano phc.conf
+
+Copy paste the following (Change user and password):
+rpcuser=biznatch
+rpcpassword=ent2017
+listen=1
+server=1
+daemon=1
+
+Save and exit (CTRL+X)
+
+
+Installing Apache2:
+----------------------------
+
+sudo apt-get install apache2
+
+
+Installing PHP:
+----------------------------
+
+sudo apt-get install php libapache2-mod-php php-curl
+
+
+Configure PHP:
+----------------------------
+sudo nano /etc/php/7.4/apache2/php.ini
+
+
+Look for 
+
+; This directive controls whether or not and where PHP will output errors,
+; notices and warnings too. Error output is very useful during development, but
+; it could be very dangerous in production environments. Depending on the code
+; which is triggering the error, sensitive information could potentially leak
+; out of your application such as database usernames and passwords or worse.
+; For production environments, we recommend logging errors rather than
+; sending them to STDOUT.
+; Possible Values:
+;   Off = Do not display any errors
+;   stderr = Display errors to STDERR (affects only CGI/CLI binaries!)
+;   On or stdout = Display errors to STDOUT
+; Default Value: On
+; Development Value: On
+; Production Value: Off
+; http://php.net/display-errors
+display_errors = On
+
+; The display of errors which occur during PHP's startup sequence are handled
+; separately from display_errors. PHP's default behavior is to suppress those
+; errors from clients. Turning the display of startup errors on can be useful in
+; debugging configuration problems. We strongly recommend you
+; set this to 'off' for production servers.
+; Default Value: Off
+; Development Value: On
+; Production Value: Off
+; http://php.net/display-startup-errors
+display_startup_errors = On
+
+
+Change display_errors and display_startup_errors to: On
+
+Save and exit (CTRL+X)
+
+
+Restarting Apache2:
+----------------------------
+
+sudo systemctl restart apache2
+
+
+Installing Block Crawler:
+----------------------------
+cd /var/www/html
+
+
+Grab PHC Block Crawler source:
+----------------------------
+
+sudo git clone https://github.com/profithunterscoin/phc-blockcrawler/
+
+
+Install PHC Block Crawler source:
+----------------------------
+
+cd phc-blockcrawler
+sudo cp * ../
+cd ..
+sudo mv index.html index-bkp.html
+
+
+Configure PHC Block Crawler:
+----------------------------
+
+sudo nano bc_walletconf.php
+
+Edit wallet_user and wallet_pass with info from "Configure PHC Wallet - phc.conf"
+
+
+Test in your web-browser:
+----------------------------
+http://vps_server_ip/
+
+Enjoy!
+
+
