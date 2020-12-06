@@ -28,6 +28,15 @@ cd db-4.8.30.NC
 cd build_unix/
 ../dist/configure --prefix=/usr/local --enable-cxx --with-static
 make
+
+IF you get error "atomic_compare_exchange":
+sudo nano ../dbinc/atomic.h
+CTRL + \  (Search and Replace)
+Search: atomic_compare_exchange(
+Replace: atomic_compare_exchange_db(
+CTRL + x  (Save and exit)
+make
+
 sudo make install
 
 Tell your system where to find db4.8:
@@ -37,7 +46,7 @@ export BDB_LIB_PATH="/usr/local/BerkeleyDB.4.8/lib"
 sudo ln -s /usr/local/BerkeleyDB.4.8/lib/libdb-4.8.so /usr/lib/libdb-4.8.so
 
 Ubuntu 20+
-echo "/usr/local/bdb/lib \n" | sudo tee -a /etc/ld.so.conf.d/x86_64-linux-gnu.conf
+echo "/usr/local/bdb/lib" | sudo tee -a /etc/ld.so.conf.d/x86_64-linux-gnu.conf
 
 Ubuntu 16+
 echo /usr/local/bdb/lib >> /etc/ld.so.conf
@@ -45,7 +54,7 @@ echo /usr/local/bdb/lib >> /etc/ld.so.conf
 sudo ldconfig
 
 
-Installing DB4 Dependencies (Autogen):
+Installing DB4 Dependencies (Autogen - Not Used Yet):
 ----------------------------
 
 BITCOIN_ROOT=$(pwd)
@@ -70,7 +79,7 @@ cd $BITCOIN_ROOT
 
 Openssl 1.0.2
 ----------------------------
-
+cd
 wget https://www.openssl.org/source/openssl-1.0.2n.tar.gz -O openssl-1.0.2n.tar.gz
 tar -zxf openssl-1.0.2n.tar.gz
 cd openssl-1.0.2n
@@ -82,7 +91,7 @@ sudo make install
 
 Creating a swap space (optional):
 ----------------------------
-
+cd
 sudo fallocate -l 3G /swapfile
 sudo sudo dd if=/dev/zero of=swapfile bs=1M count=3072
 sudo mkswap /swapfile
@@ -93,7 +102,7 @@ Ubuntu 20+
 echo "/swapfile none swap sw 0 0 \n" | sudo tee -a /etc/fstab
 
 Ubuntu 16+
-sudo echo -e "/swapfile none swap sw 0 0 \n" >> /etc/fstab
+sudo echo -e "/swapfile none swap sw 0 0" >> /etc/fstab
 
 sudo cat /proc/meminfo
 
@@ -109,21 +118,20 @@ Compiling Daemon:
 ----------------------------
 
 cd src
+git checkout 1.0.0.7-dev
 make -f makefile.unix
-cd ..
 
 
 Installing Daemon:
 ----------------------------
 
-cd src
 sudo cp phcd /usr/bin
-cd ..
 
 
 Install Configure PHC Wallet:
 ----------------------------
 cd
+mkdir .PHC
 cd .PHC
 nano phc.conf
 
@@ -149,10 +157,11 @@ Installing PHP:
 sudo apt-get install php libapache2-mod-php php-curl
 
 
-Configure PHP:
+Configure PHP (For Debugging only):
 ----------------------------
-sudo nano /etc/php/7.4/apache2/php.ini
+Skip this step for production servers
 
+sudo nano /etc/php/7.4/apache2/php.ini
 
 Look for 
 
@@ -222,6 +231,11 @@ Configure PHC Block Crawler:
 sudo nano bc_walletconf.php
 
 Edit wallet_user and wallet_pass with info from "Configure PHC Wallet - phc.conf"
+
+
+Start PHC Daemon:
+----------------------------
+phcd
 
 
 Test in your web-browser:
