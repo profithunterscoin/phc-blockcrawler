@@ -186,7 +186,7 @@ else
 		}
 		else
 		{
-			if ($network_info["pow_lastreward"] != "")
+			if (isset($network_info["pow_lastreward"]))
 			{
 							echo "          	<div class=\"node_detail\">\n";
 							echo "                  	<span class=\"node_desc\">Last Reward (PoW):</span><br>\n";
@@ -195,11 +195,11 @@ else
 							echo "\n";
 			}
 
-			if ($network_info["pos_lastreward"] != "")
+			if (isset($network_info["pos_lastreward"]))
 			{
 							echo "          	<div class=\"node_detail\">\n";
 							echo "                  	<span class=\"node_desc\">Last Reward (PoS/MN):</span><br>\n";
-							echo "                  	". number_format($network_info["pow_lastreward"], 2) ." PHC\n";
+							echo "                  	". number_format($network_info["pos_lastreward"], 2) ." PHC\n";
 							echo "          	</div>\n";
 							echo "\n";
 			}
