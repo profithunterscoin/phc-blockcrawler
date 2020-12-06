@@ -117,7 +117,9 @@ cd phc/src
 Compiling Daemon:
 ----------------------------
 
+To test newest version:
 git checkout 1.0.0.7-dev
+
 make -f makefile.unix
 
 
