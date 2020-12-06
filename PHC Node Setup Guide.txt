@@ -233,6 +233,16 @@ sudo nano bc_walletconf.php
 Edit wallet_user and wallet_pass with info from "Configure PHC Wallet - phc.conf"
 
 
+Bootstrap the blockchain download (optional):
+----------------------------
+cd .PHC
+wget http://profithunterscoin.com/bootstraps/full-bootstrap.zip
+unzip full-bootstrap
+cd full-bootstrap
+cp * ../ -r
+cd
+
+
 Start PHC Daemon:
 ----------------------------
 phcd
