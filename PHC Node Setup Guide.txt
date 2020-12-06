@@ -1,7 +1,5 @@
 PHP Block Explorer without SQL databases
-
 Version: 1.0.0.1
-
 Block Crawler Node Setup Instructions
 
 
@@ -32,8 +30,8 @@ make
 IF you get error "atomic_compare_exchange":
 sudo nano ../dbinc/atomic.h
 CTRL + \  (Search and Replace)
-Search: atomic_compare_exchange(
-Replace: atomic_compare_exchange_db(
+Search: static inline int __atomic_compare_exchange(
+Replace: static inline int __atomic_compare_exchange_db(
 CTRL + x  (Save and exit)
 make
 
@@ -79,6 +77,7 @@ cd $BITCOIN_ROOT
 
 Openssl 1.0.2
 ----------------------------
+
 cd
 wget https://www.openssl.org/source/openssl-1.0.2n.tar.gz -O openssl-1.0.2n.tar.gz
 tar -zxf openssl-1.0.2n.tar.gz
@@ -91,6 +90,7 @@ sudo make install
 
 Creating a swap space (optional):
 ----------------------------
+
 cd
 sudo fallocate -l 3G /swapfile
 sudo sudo dd if=/dev/zero of=swapfile bs=1M count=3072
@@ -99,7 +99,7 @@ sudo chmod 600 /swapfile
 sudo swapon /swapfile
 
 Ubuntu 20+
-echo "/swapfile none swap sw 0 0 \n" | sudo tee -a /etc/fstab
+echo "/swapfile none swap sw 0 0" | sudo tee -a /etc/fstab
 
 Ubuntu 16+
 sudo echo -e "/swapfile none swap sw 0 0" >> /etc/fstab
@@ -111,13 +111,12 @@ Grabbing the source code:
 ----------------------------
 
 git clone http://github.com/profithunterscoin/phc
-cd phc
+cd phc/src
 
 
 Compiling Daemon:
 ----------------------------
 
-cd src
 git checkout 1.0.0.7-dev
 make -f makefile.unix
 
@@ -233,10 +232,29 @@ sudo nano bc_walletconf.php
 Edit wallet_user and wallet_pass with info from "Configure PHC Wallet - phc.conf"
 
 
-Bootstrap the blockchain download (optional):
+Bootstrap the blockchain download (optional @ 1732279 - 64c8c4e):
+
 ----------------------------
+
+cd
 cd .PHC
 wget http://profithunterscoin.com/bootstraps/full-bootstrap.zip
+
+Mirror #1 (Fast)
+wget http://168.235.110.212/full-bootstrap.zip
+
+Mirror #2 (Fast)
+wget http://168.235.85.11/full-bootstrap.zip
+
+Mirror #3 (Fast)
+wget http://107.191.102.223/full-bootstrap.zip
+
+Mirror #4 (Fast)
+wget http://107.161.26.17/full-bootstrap.zip
+
+Mirror #5 (Fast)
+wget http://81.4.109.132/full-bootstrap.zip
+
 unzip full-bootstrap
 cd full-bootstrap
 cp * ../ -r
@@ -245,11 +263,13 @@ cd
 
 Start PHC Daemon:
 ----------------------------
+
 phcd
 
 
 Test in your web-browser:
 ----------------------------
+
 http://vps_server_ip/
 
 Enjoy!
