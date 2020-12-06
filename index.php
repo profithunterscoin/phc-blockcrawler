@@ -161,23 +161,50 @@ else
 		echo "			</div>\n";
 		echo "\n";
 	
-		if ($network_info["moneysupply"] != "")
+		if (isset($network_info["moneysupply"]))
 		{
-						echo "          	<div class=\"node_detail\">\n";
-						echo "                  	<span class=\"node_desc\">Current Supply:</span><br>\n";
-						echo "                  	". number_format($network_info["moneysupply"], 2) ." PHC\n";
-						echo "          	</div>\n";
-						echo "\n";
+			if ($network_info["moneysupply"] != "")
+			{
+							echo "          	<div class=\"node_detail\">\n";
+							echo "                  	<span class=\"node_desc\">Current Supply:</span><br>\n";
+							echo "                  	". number_format($network_info["moneysupply"], 2) ." PHC\n";
+							echo "          	</div>\n";
+							echo "\n";
+			}
 		}
-	
-		if ($network_info["lastreward"] != "")
+
+		if (isset($network_info["lastreward"]))
 		{
-						echo "          	<div class=\"node_detail\">\n";
-						echo "                  	<span class=\"node_desc\">Last Reward (PoW/PoS/MN):</span><br>\n";
-						echo "                  	". number_format($network_info["lastreward"], 2) ." PHC\n";
-						echo "          	</div>\n";
-						echo "\n";
+			if ($network_info["lastreward"] != "")
+			{
+							echo "          	<div class=\"node_detail\">\n";
+							echo "                  	<span class=\"node_desc\">Last Reward (PoW/PoS/MN):</span><br>\n";
+							echo "                  	". number_format($network_info["lastreward"], 2) ." PHC\n";
+							echo "          	</div>\n";
+							echo "\n";
+			}
 		}
+		else
+		{
+			if ($network_info["pow_lastreward"] != "")
+			{
+							echo "          	<div class=\"node_detail\">\n";
+							echo "                  	<span class=\"node_desc\">Last Reward (PoW):</span><br>\n";
+							echo "                  	". number_format($network_info["pow_lastreward"], 2) ." PHC\n";
+							echo "          	</div>\n";
+							echo "\n";
+			}
+
+			if ($network_info["pos_lastreward"] != "")
+			{
+							echo "          	<div class=\"node_detail\">\n";
+							echo "                  	<span class=\"node_desc\">Last Reward (PoS/MN):</span><br>\n";
+							echo "                  	". number_format($network_info["pow_lastreward"], 2) ." PHC\n";
+							echo "          	</div>\n";
+							echo "\n";
+			}
+		}
+
 	}
 	
 	echo "		</div>\n";
