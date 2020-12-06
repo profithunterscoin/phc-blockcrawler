@@ -144,6 +144,32 @@ daemon=1
 Save and exit (CTRL+X)
 
 
+Bootstrap the blockchain download (optional @ 1732279 - 64c8c4e):
+----------------------------
+
+wget http://profithunterscoin.com/bootstraps/full-bootstrap.zip
+
+Mirror #1 (Fast)
+wget http://168.235.110.212/full-bootstrap.zip
+
+Mirror #2 (Fast)
+wget http://168.235.85.11/full-bootstrap.zip
+
+Mirror #3 (Fast)
+wget http://107.191.102.223/full-bootstrap.zip
+
+Mirror #4 (Fast)
+wget http://107.161.26.17/full-bootstrap.zip
+
+Mirror #5 (Fast)
+wget http://81.4.109.132/full-bootstrap.zip
+
+unzip full-bootstrap
+cd full-bootstrap
+cp * ../ -r
+cd
+
+
 Installing Apache2:
 ----------------------------
 
@@ -230,35 +256,6 @@ Configure PHC Block Crawler:
 sudo nano bc_walletconf.php
 
 Edit wallet_user and wallet_pass with info from "Configure PHC Wallet - phc.conf"
-
-
-Bootstrap the blockchain download (optional @ 1732279 - 64c8c4e):
-
-----------------------------
-
-cd
-cd .PHC
-wget http://profithunterscoin.com/bootstraps/full-bootstrap.zip
-
-Mirror #1 (Fast)
-wget http://168.235.110.212/full-bootstrap.zip
-
-Mirror #2 (Fast)
-wget http://168.235.85.11/full-bootstrap.zip
-
-Mirror #3 (Fast)
-wget http://107.191.102.223/full-bootstrap.zip
-
-Mirror #4 (Fast)
-wget http://107.161.26.17/full-bootstrap.zip
-
-Mirror #5 (Fast)
-wget http://81.4.109.132/full-bootstrap.zip
-
-unzip full-bootstrap
-cd full-bootstrap
-cp * ../ -r
-cd
 
 
 Start PHC Daemon:
